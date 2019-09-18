@@ -79,10 +79,10 @@
 </template>
 
 <script>
-import CountTo from "vue-count-to";
+import CountTo from 'vue-count-to'
 
 export default {
-  name: "OEEBlockPanel",
+  name: 'OEEBlockPanel',
   components: {
     CountTo
   },
@@ -110,23 +110,23 @@ export default {
       performanceOld: 0,
       qualityOld: 0,
       oeeOld: 0
-    };
+    }
   },
   watch: {
     availability: function(newVal, oldVal) {
-      this.availabilityOld = oldVal;
+      this.availabilityOld = oldVal
     },
     performance: function(newVal, oldVal) {
-      this.performanceOld = oldVal;
+      this.performanceOld = oldVal
     },
     quality: function(newVal, oldVal) {
-      this.qualityOld = oldVal;
+      this.qualityOld = oldVal
     },
     oee: function(newVal, oldVal) {
-      this.oeeOld = oldVal;
+      this.oeeOld = oldVal
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

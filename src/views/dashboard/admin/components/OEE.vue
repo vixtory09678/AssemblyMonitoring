@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import OEEBlockPanel from "./OEEBlockPanel";
+import OEEBlockPanel from './OEEBlockPanel'
 
 export default {
   components: {
@@ -16,19 +16,6 @@ export default {
   },
   props: {
     data: Object
-  },
-  watch: {
-    data: {
-      handler(val) {
-        if (val === null) {
-          return;
-        }
-        if (val === undefined) {
-          return;
-        }
-        this.objControlChart = val;
-      }
-    }
   },
   data() {
     return {
@@ -40,45 +27,58 @@ export default {
         totalTime: 0
       },
       targetDiv: 4
-    };
+    }
+  },
+  watch: {
+    data: {
+      handler(val) {
+        if (val === null) {
+          return
+        }
+        if (val === undefined) {
+          return
+        }
+        this.objControlChart = val
+      }
+    }
   },
   methods: {
     getTimeError() {
-      return this.objControlChart.timeError;
+      return this.objControlChart.timeError
     },
     getGood() {
-      return this.objControlChart.good;
+      return this.objControlChart.good
     },
     getBad() {
-      return this.objControlChart.bad;
+      return this.objControlChart.bad
     },
     getAvailability() {
-      return (this.getTotalTime() - this.getTimeError()) / this.getTotalTime();
+      return (this.getTotalTime() - this.getTimeError()) / this.getTotalTime()
     },
     getPerformance() {
-      return this.getTotal() / this.getTarget();
+      return this.getTotal() / this.getTarget()
     },
     getQuality() {
-      return this.getGood() / this.getTotal();
+      return this.getGood() / this.getTotal()
     },
     getOEE() {
-      return this.getQuality() * this.getPerformance() * this.getAvailability();
+      return this.getQuality() * this.getPerformance() * this.getAvailability()
     },
     getTarget() {
-      return this.getTotalTime() / this.targetDiv;
+      return this.getTotalTime() / this.targetDiv
     },
     getTotalTime() {
-      return this.objControlChart.totalTime;
+      return this.objControlChart.totalTime
     },
     setTarget(percent) {
-      if (percent == 0) return;
-      this.targetDiv = 3600 / ((percent / 100) * 900);
+      if (percent === 0) return
+      this.targetDiv = 3600 / ((percent / 100) * 900)
     },
     getTotal() {
-      return this.objControlChart.total;
+      return this.objControlChart.total
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -26,8 +26,8 @@
     </div>
 
     <el-table
-      :key="tableKey"
       v-loading="listLoading"
+      :key="tableKey"
       :data="list"
       border
       fit
@@ -35,7 +35,7 @@
       style="width: 100%;"
       @sort-change="sortChange"
     >
-      <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
+      <el-table-column :class-name="getSortClass('id')" label="ID" prop="id" sortable="custom" align="center" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>

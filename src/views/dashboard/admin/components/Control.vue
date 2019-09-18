@@ -37,35 +37,18 @@
 </template>
 
 <script>
-import DataBlock from "./DataBlock";
-import moment from "moment";
-import ControlChart from "./ControlChart";
+import DataBlock from './DataBlock'
+import moment from 'moment'
+import ControlChart from './ControlChart'
 
 export default {
-  name: "Control",
-  props: {
-    data: Object
-  },
-  watch: {
-    data: {
-      handler(val) {
-        if (val === null) {
-          return;
-        }
-        if (val === undefined) {
-          return;
-        }
-        this.objControlChart = val;
-        this.controlChart.time.push(moment().format("YYYY-MM-DD HH:mm"));
-        this.controlChart.target.push(this.getTarget());
-        this.controlChart.actual.push(this.getTotal());
-        this.getControlChartLimit(200);
-      }
-    }
-  },
+  name: 'Control',
   components: {
     ControlChart,
     DataBlock
+  },
+  props: {
+    data: Object
   },
   data() {
     return {
@@ -82,31 +65,48 @@ export default {
         totalTime: 0
       },
       targetDiv: 4
-    };
+    }
+  },
+  watch: {
+    data: {
+      handler(val) {
+        if (val === null) {
+          return
+        }
+        if (val === undefined) {
+          return
+        }
+        this.objControlChart = val
+        this.controlChart.time.push(moment().format('YYYY-MM-DD HH:mm'))
+        this.controlChart.target.push(this.getTarget())
+        this.controlChart.actual.push(this.getTotal())
+        this.getControlChartLimit(200)
+      }
+    }
   },
   methods: {
     getTarget() {
-      return this.getTotalTime() / this.targetDiv;
+      return this.getTotalTime() / this.targetDiv
     },
     getTotalTime() {
-      return this.objControlChart.totalTime;
+      return this.objControlChart.totalTime
     },
     setTarget(percent) {
-      if (percent == 0) return;
-      this.targetDiv = 3600 / ((percent / 100) * 900);
+      if (percent === 0) return
+      this.targetDiv = 3600 / ((percent / 100) * 900)
     },
     getControlChartLimit(limit) {
       if (this.controlChart.time.length > limit) {
-        this.controlChart.time.shift();
-        this.controlChart.target.shift();
-        this.controlChart.actual.shift();
+        this.controlChart.time.shift()
+        this.controlChart.target.shift()
+        this.controlChart.actual.shift()
       }
     },
     getTotal() {
-      return this.objControlChart.total;
+      return this.objControlChart.total
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

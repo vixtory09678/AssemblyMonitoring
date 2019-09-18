@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <vue-snotify></vue-snotify>
+    <vue-snotify/>
     <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: "App",
+  name: 'App',
   mounted() {
-    this.$mqtt.subscribe("#");
+    this.$mqtt.subscribe('#')
   }
-};
+}
 </script>
 
 <style lang="scss">

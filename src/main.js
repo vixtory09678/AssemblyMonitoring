@@ -17,6 +17,9 @@ import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
 import VueMqtt from 'vue-mqtt'
 import Snotify from 'vue-snotify' // 1. Import Snotify
 
@@ -42,8 +45,8 @@ const opt = {
   clientId: 'WebClient-' + parseInt(Math.random() * 100000)
 }
 Vue.use(VueMqtt, 'ws://127.0.0.1:9001', opt)
-
 Vue.use(Snotify)
+Vue.use(VueAxios, axios)
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size

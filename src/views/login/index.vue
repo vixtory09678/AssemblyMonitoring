@@ -27,8 +27,8 @@
             <svg-icon icon-class="password" />
           </span>
           <el-input
-            :key="passwordType"
             ref="password"
+            :key="passwordType"
             v-model="loginForm.password"
             :type="passwordType"
             placeholder="Password"
@@ -63,7 +63,7 @@
       </div>
     </el-form>
 
-    <el-dialog title="Or connect with" :visible.sync="showDialog">
+    <el-dialog :visible.sync="showDialog" title="Or connect with">
       Can not be simulated on local, so please combine you own business simulation! ! !
       <br>
       <br>
