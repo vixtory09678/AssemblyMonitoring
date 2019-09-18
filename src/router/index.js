@@ -77,6 +77,20 @@ export const constantRoutes = [{
   }]
 },
 {
+  path: '/data_summary',
+  component: Layout,
+  children: [{
+    path: 'index',
+    component: () => import('@/views/summary'),
+    name: 'Data summary',
+    meta: {
+      title: 'Data summary',
+      icon: 'chart',
+      noCache: true
+    }
+  }]
+},
+{
   path: '/documentation',
   component: Layout,
   children: [{
@@ -86,7 +100,7 @@ export const constantRoutes = [{
     meta: {
       title: 'Documentation',
       icon: 'documentation',
-      affix: true
+      noCache: true
     }
   }]
 },
