@@ -4,7 +4,7 @@
     <!-- <NotiErrorGroup /> -->
     <Control :data="objControlChart" />
     <OEE :data="objControlChart" />
-    <ParetoChart :data="objParetoChart" />
+    <ParetoChart :data="objParetoChart" :data-array="objParetoArray" />
   </div>
 </template>
 
@@ -14,6 +14,7 @@
 import Control from './components/Control'
 import OEE from './components/OEE'
 import ParetoChart from './components/ParetoChart'
+import moment from 'moment'
 import { SnotifyPosition } from 'vue-snotify'
 
 export default {
@@ -25,8 +26,17 @@ export default {
   },
   data() {
     return {
-      // lineChartData: lineChartData.newVisitis,
-      objParetoChart: [{}],
+      objParetoChart: {
+        name: String,
+        ip: String,
+        error: {
+          error_id: Number,
+          description_error: String,
+          error_stack: Number,
+          time_error: Number
+        }
+      },
+      objParetoArray: [13],
       objControlChart: {
         good: 0,
         bad: 0,
@@ -35,22 +45,43 @@ export default {
         totalTime: 0
       },
       toastError: [13],
-      timerToast: [13]
+      timerToast: [13],
+      dataFetch: []
     }
   },
   mqtt: {
     'data/maintenance/pareto_chart'(data) {
       this.objParetoChart = JSON.parse(data)
+      console.log(this.objParetoChart)
     },
     'data/maintenance/control_chart'(data) {
       this.objControlChart = JSON.parse(data)
+      this.objControlChart = this.objControlChart.data
     },
     'data/maintenance/alarm'(data) {
       var obj = JSON.parse(data)
       this.showAlarm(obj)
     }
   },
+  created() {
+    const jsonData = {
+      name: 'assy1',
+      date: moment().format('YYYY-MM-DD')
+    }
+    var self = this
 
+    this.axios
+      .post('http://localhost:3000/machine_data/fetchPareto', jsonData, {
+        headers: {}
+      })
+      .then(function(response) {
+        self.objParetoArray = response.data.slice()
+        console.log(self.objParetoArray)
+      })
+      .catch(function(error) {
+        console.log(`error is ${error}`)
+      })
+  },
   methods: {
     displayNotification(html, config = {}) {
       return this.$snotify.html(html, config)
@@ -103,13 +134,6 @@ export default {
   padding: 32px;
   background-color: rgb(240, 242, 245);
   position: relative;
-
-  .github-corner {
-    position: absolute;
-    top: 0px;
-    border: 0;
-    right: 0;
-  }
 
   .chart-wrapper {
     background: #fff;
