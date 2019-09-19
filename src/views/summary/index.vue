@@ -42,6 +42,13 @@
 
     <div v-if="form.type == 'control'">
       <ControlChartSum :chart-data="controlChart" class="chart-wrapper" />
+      <GroupBlockControl
+        class="block"
+        :actual="updateBlock.actual"
+        :target="updateBlock.target"
+        :good="updateBlock.good"
+        :bad="updateBlock.bad"
+      />
     </div>
     <div v-else-if="form.type == 'oee'">
       <div class="chart-wrapper">
@@ -57,79 +64,94 @@
 </template>
 
 <script>
-import ControlChartSum from './components/ControlChartSum'
-import moment from 'moment'
+import ControlChartSum from "./components/ControlChartSum";
+import GroupBlockControl from "./components/GroupBlockControl";
+import moment from "moment";
 export default {
   components: {
-    ControlChartSum
+    ControlChartSum,
+    GroupBlockControl
   },
   data() {
     return {
       info: null,
-      mc_list: ['assy1', 'assy2', 'assy3'],
+      mc_list: ["assy1", "assy2", "assy3"],
 
       form: {
-        mc_id: '',
-        date: '',
-        type: 'control'
+        mc_id: "",
+        date: "",
+        type: "control"
       },
       dialogVisible: false,
-      message: '',
+      message: "",
       data: [],
       controlChart: {
         target: [],
         actual: [],
         time: []
       },
+
+      updateBlock: {
+        actual: 0,
+        target: 0,
+        good: 0,
+        bad: 0
+      },
+
       targetDiv: 4
-    }
+    };
   },
   methods: {
     renderGraph(self) {
       self.data.forEach(obj => {
-        var date = moment(obj.Timestamp).format('HH:mm')
-        const target = obj.data.totalTime / self.targetDiv
-        this.controlChart.time.push(date)
-        this.controlChart.target.push(target)
-        this.controlChart.actual.push(obj.data.total)
-      })
+        var date = moment(obj.Timestamp).format("HH:mm");
+        const target = obj.data.totalTime / self.targetDiv;
+        this.controlChart.time.push(date);
+        this.controlChart.target.push(target);
+        this.controlChart.actual.push(obj.data.total);
+
+        this.updateBlock.actual = obj.data.total;
+        this.updateBlock.target = target;
+        this.updateBlock.good = obj.data.good;
+        this.updateBlock.bad = obj.data.bad;
+      });
     },
     onSubmit() {
       if (this.form.mc_id.length === 0 || this.form.date.length === 0) {
-        this.message = 'Machine ID or Date is not select'
-        this.dialogVisible = true
-        return
+        this.message = "Machine ID or Date is not select";
+        this.dialogVisible = true;
+        return;
       }
 
       const jsonData = {
         name: this.form.mc_id,
         data_type: this.form.type,
         date: this.form.date
-      }
-      var self = this
+      };
+      var self = this;
       this.axios
         .post(
-          'http://localhost:3000/machine_data/' + self.form.type,
+          "http://localhost:3000/machine_data/" + self.form.type,
           jsonData,
           {
             headers: {}
           }
         )
         .then(function(response) {
-          self.data = response.data.slice()
-          self.controlChart.target = []
-          self.controlChart.actual = []
-          self.controlChart.time = []
-          console.log(self.data)
+          self.data = response.data.slice();
+          self.controlChart.target = [];
+          self.controlChart.actual = [];
+          self.controlChart.time = [];
+          console.log(self.data);
 
-          self.renderGraph(self)
+          self.renderGraph(self);
         })
         .catch(function(error) {
-          console.log(`${error}`)
-        })
+          console.log(`${error}`);
+        });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -139,5 +161,8 @@ export default {
 .chart-wrapper {
   padding-left: 30px;
   padding-right: 30px;
+}
+.icon-size {
+  font-size: 2rem;
 }
 </style>
