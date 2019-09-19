@@ -3,7 +3,7 @@
     <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-quality">
-          <svg-icon icon-class="excel" class-name="card-panel-icon" />
+          <svg-icon icon-class="cogwheel" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">OEE</div>
@@ -22,7 +22,7 @@
     <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-good">
-          <svg-icon icon-class="excel" class-name="card-panel-icon" />
+          <svg-icon icon-class="hours" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Availability</div>
@@ -41,7 +41,7 @@
     <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-good">
-          <svg-icon icon-class="excel" class-name="card-panel-icon" />
+          <svg-icon icon-class="mass-production" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Performance</div>
@@ -60,7 +60,7 @@
     <el-col :xs="24" :sm="24" :lg="6" class="card-panel-col">
       <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-bad">
-          <svg-icon icon-class="excel" class-name="card-panel-icon" />
+          <svg-icon icon-class="settings" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Quality</div>
@@ -79,10 +79,10 @@
 </template>
 
 <script>
-import CountTo from 'vue-count-to'
+import CountTo from "vue-count-to";
 
 export default {
-  name: 'OEEBlockPanel',
+  name: "OEEBlockPanel",
   components: {
     CountTo
   },
@@ -110,23 +110,23 @@ export default {
       performanceOld: 0,
       qualityOld: 0,
       oeeOld: 0
-    }
+    };
   },
   watch: {
     availability: function(newVal, oldVal) {
-      this.availabilityOld = oldVal
+      this.availabilityOld = oldVal;
     },
     performance: function(newVal, oldVal) {
-      this.performanceOld = oldVal
+      this.performanceOld = oldVal;
     },
     quality: function(newVal, oldVal) {
-      this.qualityOld = oldVal
+      this.qualityOld = oldVal;
     },
     oee: function(newVal, oldVal) {
-      this.oeeOld = oldVal
+      this.oeeOld = oldVal;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

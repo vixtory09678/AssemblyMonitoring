@@ -2,7 +2,7 @@
   <div class="panel-group">
     <div class="card-panel">
       <div :class="color">
-        <svg-icon class=":color" icon-class="excel" class-name="card-panel-icon" />
+        <svg-icon class=":color" icon-class="growth" class-name="card-panel-icon" />
       </div>
       <div class="card-panel-description">
         <div class="card-panel-text">{{ descriptions }}</div>
@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import CountTo from 'vue-count-to'
+import CountTo from "vue-count-to";
 
 export default {
   components: {
@@ -32,28 +32,28 @@ export default {
     },
     descriptions: {
       type: String,
-      default: 'Good'
+      default: "Good"
     },
     type: {
       type: String,
-      default: 'count'
+      default: "growth"
     },
     color: {
       type: String,
-      default: 'red'
+      default: "red"
     }
   },
   data() {
     return {
       oldData: 0
-    }
+    };
   },
   watch: {
     data: function(newVal, oldVal) {
-      this.oldData = oldVal
+      this.oldData = oldVal;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
