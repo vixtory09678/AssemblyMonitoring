@@ -71,7 +71,7 @@ export default {
     var self = this
 
     this.axios
-      .post('http://localhost:3000/machine_data/fetchPareto', jsonData, {
+      .post('http://54.179.167.18:3000/machine_data/fetchPareto', jsonData, {
         headers: {}
       })
       .then(function(response) {

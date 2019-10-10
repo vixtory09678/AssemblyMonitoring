@@ -7,13 +7,13 @@
 </template>
 
 <script>
-import Anychart from 'anychart'
-import * as data from '../components/data/data'
-import VueAnyChart from '../../../../components/Charts/AnyChart'
-import * as error from '../components/data/error_pareto'
+import Anychart from "anychart";
+import * as data from "../components/data/data";
+import VueAnyChart from "../../../../components/Charts/AnyChart";
+import * as error from "../components/data/error_pareto";
 
 export default {
-  name: 'ParetoChart',
+  name: "ParetoChart",
   components: {
     VueAnyChart
   },
@@ -23,7 +23,7 @@ export default {
       default: {}
     },
     dataArray: {
-      type: Object,
+      type: Array,
       default: []
     }
   },
@@ -34,58 +34,58 @@ export default {
       objParetoChart: {
         errors: error.Error
       }
-    }
+    };
   },
   watch: {
     data: {
       handler(vals) {
         if (vals === null) {
-          return
+          return;
         }
         if (vals === undefined) {
-          return
+          return;
         }
 
-        console.log(`pareto are ${vals}`)
+        console.log(`pareto are ${vals}`);
 
         this.objParetoChart.errors[vals.error.error_id].error_stack =
-          vals.error.error_stack
+          vals.error.error_stack;
 
-        this.setParetoData()
+        this.setParetoData();
       }
     },
     dataArray: {
       handler(vals) {
         if (vals === null) {
-          return
+          return;
         }
         if (vals === undefined) {
-          return
+          return;
         }
 
-        vals.forEach(val => {
-          this.objParetoChart.errors[val.error.error_id].error_stack =
-            val.error.error_stack
-        })
+        for (let i = 0; i < vals.length; i++) {
+          this.objParetoChart.errors[i].error_stack =
+            vals[i] === null ? 0 : vals[i].error.error_stack;
+        }
 
-        this.setParetoData()
+        this.setParetoData();
       }
     }
   },
   methods: {
     setParetoData() {
-      var temp = []
+      var temp = [];
       this.objParetoChart.errors.forEach(err => {
         temp.push({
           x: err.description,
           value: err.error_stack
-        })
-      })
+        });
+      });
 
-      this.$refs.paretoChart.chart.data(temp)
+      this.$refs.paretoChart.chart.data(temp);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -44,7 +44,7 @@ if (process.env.NODE_ENV === 'production') {
 const opt = {
   clientId: 'WebClient-' + parseInt(Math.random() * 100000)
 }
-Vue.use(VueMqtt, 'ws://127.0.0.1:9001', opt)
+Vue.use(VueMqtt, 'ws://54.179.167.18:9001', opt)
 Vue.use(Snotify)
 Vue.use(VueAxios, axios)
 

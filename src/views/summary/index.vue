@@ -19,14 +19,6 @@
         </el-col>
       </el-form-item>
 
-      <el-form-item label="Slect data type">
-        <el-radio-group v-model="form.type">
-          <el-radio label="control">Control chart</el-radio>
-          <el-radio label="oee">OEE, ...</el-radio>
-          <el-radio label="error">Errors</el-radio>
-        </el-radio-group>
-      </el-form-item>
-
       <el-form-item>
         <el-button type="success" @click="onSubmit">Process</el-button>
       </el-form-item>
@@ -40,37 +32,35 @@
       </span>
     </el-dialog>
 
-    <div v-if="form.type == 'control'">
-      <ControlChartSum :chart-data="controlChart" class="chart-wrapper" />
-      <GroupBlockControl
-        class="block"
-        :actual="updateBlock.actual"
-        :target="updateBlock.target"
-        :good="updateBlock.good"
-        :bad="updateBlock.bad"
-      />
-    </div>
-    <div v-else-if="form.type == 'oee'">
-      <div class="chart-wrapper">
-        <p>OEE Comming soon</p>
-      </div>
-    </div>
-    <div v-else>
-      <div class="chart-wrapper">
-        <p>Error Comming soon</p>
-      </div>
-    </div>
+    <ControlChartSum :chart-data="controlChart" class="chart-wrapper" />
+    <GroupBlockControl
+      class="block"
+      :actual="updateControlBlock.actual"
+      :target="updateControlBlock.target"
+      :good="updateControlBlock.good"
+      :bad="updateControlBlock.bad"
+    />
+
+    <GroupBlockOEE
+      class="block"
+      :oee="updateOEEBlock.oee"
+      :availability="updateOEEBlock.ava"
+      :performance="updateOEEBlock.per"
+      :quality="updateOEEBlock.qua"
+    />
   </div>
 </template>
 
 <script>
 import ControlChartSum from "./components/ControlChartSum";
 import GroupBlockControl from "./components/GroupBlockControl";
+import GroupBlockOEE from "./components/GroupBlockOEE";
 import moment from "moment";
 export default {
   components: {
     ControlChartSum,
-    GroupBlockControl
+    GroupBlockControl,
+    GroupBlockOEE
   },
   data() {
     return {
@@ -91,11 +81,18 @@ export default {
         time: []
       },
 
-      updateBlock: {
+      updateControlBlock: {
         actual: 0,
         target: 0,
         good: 0,
         bad: 0
+      },
+
+      updateOEEBlock: {
+        oee: 0,
+        ava: 0,
+        per: 0,
+        qua: 0
       },
 
       targetDiv: 4
@@ -106,14 +103,23 @@ export default {
       self.data.forEach(obj => {
         var date = moment(obj.Timestamp).format("HH:mm");
         const target = obj.data.totalTime / self.targetDiv;
+        const mcRun = obj.data.totalTime - obj.data.timeError;
         this.controlChart.time.push(date);
         this.controlChart.target.push(target);
         this.controlChart.actual.push(obj.data.total);
 
-        this.updateBlock.actual = obj.data.total;
-        this.updateBlock.target = target;
-        this.updateBlock.good = obj.data.good;
-        this.updateBlock.bad = obj.data.bad;
+        this.updateControlBlock.actual = obj.data.total;
+        this.updateControlBlock.target = target;
+        this.updateControlBlock.good = obj.data.good;
+        this.updateControlBlock.bad = obj.data.bad;
+
+        this.updateOEEBlock.ava = mcRun / obj.data.totalTime;
+        this.updateOEEBlock.per = obj.data.total / target;
+        this.updateOEEBlock.qua = obj.data.good / obj.data.total;
+        this.updateOEEBlock.oee =
+          this.updateOEEBlock.ava *
+          this.updateOEEBlock.per *
+          this.updateOEEBlock.qua;
       });
     },
     onSubmit() {
@@ -128,10 +134,13 @@ export default {
         data_type: this.form.type,
         date: this.form.date
       };
+
+      console.log(jsonData);
+
       var self = this;
       this.axios
         .post(
-          "http://localhost:3000/machine_data/" + self.form.type,
+          "http://54.179.167.18:3000/machine_data/" + self.form.type,
           jsonData,
           {
             headers: {}
