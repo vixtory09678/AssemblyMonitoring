@@ -26,6 +26,8 @@ import Snotify from 'vue-snotify' // 1. Import Snotify
 import * as filters from './filters' // global filters
 import 'vue-snotify/styles/material.css'
 
+import locale from 'element-ui/lib/locale/lang/en'
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -48,7 +50,7 @@ Vue.use(VueMqtt, 'ws://54.179.167.18:9001', opt)
 Vue.use(Snotify)
 Vue.use(VueAxios, axios)
 
-Vue.use(Element, {
+Vue.use(Element, locale, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
 
